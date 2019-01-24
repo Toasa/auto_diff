@@ -109,21 +109,21 @@ class Func:
         outval = self.outvar.dval
 
         if self.func == "sin":
-            self.invar.dval += cos(outval)
+            self.invar.dval += outval * cos(self.invar.val)
         if self.func == "cos":
-            self.invar.dval -= sin(outval)
+            self.invar.dval += outval * -sin(self.invar.val)
         if self.func == "exp":
-            self.invar.dval += exp(outval)
+            self.invar.dval += outval * exp(self.invar.val)
         if self.func == "log":
             assert outval != 0, "invalid operand"
-            self.invar.dval += 1 / outval
+            self.invar.dval += outval * (1 / self.invar.val)
         if self.func == "relu":
             if self.invar.val > 0:
-                self.invar.dval += outval
+                self.invar.dval += outval * self.invar.val
             else:
                 self.invar.dval += 0
         if self.func == "sigmoid":
-            self.invar.dval += (1 / (1 + exp(-outval))) * (1 / (1 + exp(-outval))) * exp(-outval)
+            self.invar.dval += outval * ((1 / (1 + exp(-self.invar.val))) * (1 / (1 + exp(-self.invar.val))) * exp(-self.invar.val))
 
 # 識別子を格納する辞書
 idents = {}
@@ -291,18 +291,26 @@ def main():
 # (a * b) + sin(a)
 # """
 
-    input = """
-a = 6
-b = 4
-c = 2
-(a + b) * (log(b) + c)
-"""
+#     input = """
+# a = 6
+# b = 4
+# (a * b) + cos(a)
+# """
 
 #     input = """
 # a = 6
 # b = 4
-# cos(a * sin(a + b))
+# c = 2
+# (a + b) * (log(b) + c)
 # """
+
+    input = """
+a = 6
+b = 4
+cos(a * sin(a + b))
+"""
+
+
 
 # forward-modeからやるので、変数の値は定まっているものとできる
 #
