@@ -119,7 +119,7 @@ class Func:
             self.invar.dval += outval * (1 / self.invar.val)
         if self.func == "relu":
             if self.invar.val > 0:
-                self.invar.dval += outval * self.invar.val
+                self.invar.dval += outval
             else:
                 self.invar.dval += 0
         if self.func == "sigmoid":
@@ -297,18 +297,18 @@ def main():
 # (a * b) + cos(a)
 # """
 
-#     input = """
-# a = 6
-# b = 4
-# c = 2
-# (a + b) * (log(b) + c)
-# """
-
     input = """
 a = 6
 b = 4
-cos(a * sin(a + b))
+c = 2
+(a + b) * (log(b) + c)
 """
+
+#     input = """
+# a = 6
+# b = 4
+# cos(a * sin(a + b))
+# """
 
 
 
